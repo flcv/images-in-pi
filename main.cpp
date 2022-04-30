@@ -1,19 +1,31 @@
+#include <algorithm>
 #include <cstddef>
 #include <iostream>
 #include <math.h>
 #include <string>
 #include <vector>
 #include <chrono>
+#include <algorithm>
 
 const int DESIRED_PATTERN[] = {
-  0,1,0,
+  0,1,1,
+  1,0,0,
   1,1,1,
-  0,1
+  1,0,1
 };
 
-const int WIDTH = 4;
+const int WIDTH = 3;
+const int LENGTH = (sizeof(DESIRED_PATTERN)/sizeof(*DESIRED_PATTERN));
+const int HEIGHT = LENGTH/WIDTH;
 
-const int HEIGHT = (sizeof(DESIRED_PATTERN)/sizeof(*DESIRED_PATTERN));
+std::string intArrayToString(const int arr[], int size){
+  std::string ret = "";
+  for (int i = 0; i < size; i++) {
+    ret.append(std::to_string(arr[i]));
+  }
+
+  return ret;
+}
 
 std::string decimalToBinary(int dec) {
   return std::bitset<4>(dec).to_string();
@@ -53,17 +65,29 @@ int main() {
   }
 
   // begin search for desired pattern
-  bool found = false;
   auto start = std::chrono::high_resolution_clock::now();
-  while(!found) {
-    std::cout << "Searching for...\n";
-    printPattern(DESIRED_PATTERN, WIDTH, HEIGHT);
-    std::cout << "\n\n\n";
-    // printPattern(piBinary, WIDTH, (int)floor(piBinary.size()/3.0));
+  std::cout << "Searching for...\n";
+  std::cout << "================\n";
+  printPattern(DESIRED_PATTERN, WIDTH, HEIGHT);
+  std::cout << "================\n";
+  std::cout << "\n\n\n";  
+  
+  
+  std::size_t pos = piBinary.find(intArrayToString(DESIRED_PATTERN, LENGTH));
 
-  }
   auto end = std::chrono::high_resolution_clock::now();
-  std::cout << "Time elapsed: " << (duration_cast<std::chrono::microseconds>(end - start).count()/(pow(10,6)));
+  if (pos == std::string::npos){
+    std::cout << "The pattern was not found " << "\n";
+  } else {
+    std::cout << "The pattern was first found at position " << std::to_string(pos) << "\n\n";
+    // min and max to ensure no indexing out-of-bounds errors,
+    // but also want to show some of the surrounding patterns for context
+    std::size_t l = std::min(pos+LENGTH+6*WIDTH, piBinary.size())-pos, m = 0;
+    std::string excerpt = piBinary.substr(std::max(m,pos-3*WIDTH), l);
+    printPattern(excerpt, WIDTH, (int)floor(excerpt.size()/(double)WIDTH));
+  }
+  
+  std::cout << "Time elapsed: " << (duration_cast<std::chrono::microseconds>(end - start).count()/(pow(10,3))) << " ms";
 
   return 0;
 }
