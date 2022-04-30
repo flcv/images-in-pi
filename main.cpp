@@ -7,14 +7,17 @@
 #include <chrono>
 #include <algorithm>
 
+// please enter your desired pattern to be searched in pi here
 const int DESIRED_PATTERN[] = {
   0,1,1,
   1,0,0,
   1,1,1,
   1,0,1
 };
-
+// please then specify the "width" of the above pattern here
 const int WIDTH = 3;
+// that's all the required input. thanks
+
 const int LENGTH = (sizeof(DESIRED_PATTERN)/sizeof(*DESIRED_PATTERN));
 const int HEIGHT = LENGTH/WIDTH;
 
@@ -54,8 +57,6 @@ void printPattern(T pattern, const int x, const int y){
 }
 
 int main() {
-
-  // needs to check an area twice as long as the DESIRED_PATTERN's length
 
   // init; generate digits of pi then convert it to binary
   std::string x = getDigitsOfPi();
