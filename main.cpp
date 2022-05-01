@@ -9,10 +9,9 @@
 
 // please enter your desired pattern to be searched in pi here
 const int DESIRED_PATTERN[] = {
-  0,1,1,
-  1,0,0,
+  0,1,0,
   1,1,1,
-  1,0,1
+  0,1,0
 };
 // please then specify the "width" of the above pattern here
 const int WIDTH = 3;
